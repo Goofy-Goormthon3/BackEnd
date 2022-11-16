@@ -7,5 +7,6 @@ const router = Router();
 
 // router.use("/", require("./root"));
 router.use("/test", require("./test"));
+router.use("/wave-grade", require("./wave-grade"));
 
 module.exports = router;
