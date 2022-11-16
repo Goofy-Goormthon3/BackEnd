@@ -3,7 +3,7 @@ const router = Router();
 
 exports.get_root = async (req,res) => {
     try {
-        res.send("Helloe World");
+        res.status(200).send("Helloe World");
     } catch (err) {
         console.log(err);
         res.send("error");

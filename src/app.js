@@ -48,7 +48,7 @@ class App {
     }
 
     setCors() {
-        this.app.use(cors({orgin: 'http://54.180.83.73/8080'}));
+        this.app.use(cors({orgin: 'http://54.180.83.73:8080'}));
     }
 
 }
