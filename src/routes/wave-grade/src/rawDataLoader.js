@@ -8,7 +8,7 @@ export async function rawDataLoader(lat, lng){
 
     let resultData = {};
 
-    console.log("rawDataLoader Func========");
+    // console.log("rawDataLoader Func========");
 
     //waveRawData
     await fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lng}&hourly=wave_height,wave_direction,wave_period&timezone=Asia/Seoul`, {
@@ -26,7 +26,7 @@ export async function rawDataLoader(lat, lng){
         resultData.WindSpeed = jsonData.hourly.windspeed_10m[curHourNum];
         resultData.WindDec = jsonData.hourly.winddirection_10m[curHourNum];  
         resultData.AirTemp = jsonData.hourly.apparent_temperature[curHourNum];      
-        console.log(resultData);
+        // console.log(resultData);
     });    
 
     return resultData;

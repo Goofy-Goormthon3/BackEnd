@@ -13,20 +13,29 @@ exports.get_wave_info_total_data = async (req,res) => {
         
         const rawData = await rawDataLoader(spotCodeData.lat[spotCodeNum], spotCodeData.lat[spotCodeNum]);
         const waveGradeScore = await waveGrader(rawData);
-        
+        console.log(waveGradeScore);
+        let waveGrade = 0;
+
+        if (waveGradeScore<20)
+            waveGrade=1;
+        else if (waveGradeScore<40)
+            waveGrade=2;
+        else if (waveGradeScore<60)
+            waveGrade=3;
+        else if (waveGradeScore<80)
+            waveGrade=4;
+        else
+            waveGrade=5;
+
         //Need to be changed
         let waterTemp = 20;
         let totalData = {
-            WaveGrade: waveGradeScore,
-            WaveHieght: rawData.WaveHeight,
-            WindSpeed: rawData.WindSpeed,
-            AirTemp: rawData.AirTemp,
-            WaterTemp: waterTemp, 
+            WaveGrade: waveGrade.toString(),
+            WaveHeight: rawData.WaveHeight.toString(),
+            WindSpeed: rawData.WindSpeed.toString(),
+            AirTemp: rawData.AirTemp.toString(),
+            WaterTemp: waterTemp.toString(), 
         }
-        // let totalData = {...rawData};
-        // totalData.WaveGrade=waveGradeScore;
-        // totalData.WaterTemp=waterTemp;
-
         res.send(totalData);
     } catch (error) {
         console.log(error);

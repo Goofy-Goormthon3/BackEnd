@@ -7,48 +7,49 @@ export async function waveGrader(rawData) {
     let windDec = rawData.WindDec;
     let windSpeed = rawData.WindSpeed;
 
+    let waveHeightScore = 0.0;
+    let wavePeriodScore = 0.0;
+    let windSpeedScore = 0.0;
+    let decScore = 0.0;
+
     //WaveHeight Score
     if (waveHeight <= 0.2) 
-        waveScore+=0;
+        waveHeightScore=0;
     else if (waveHeight <= 0.5)
-        waveScore+=5;
+        waveHeightScore=5;
     else if (waveHeight <= 0.7)
-        waveScore+=15;
+        waveHeightScore=waveHeight*100-40;
     else if (waveHeight <= 1.2)
-        waveScore+=20;
+        waveHeightScore=waveHeight*150-50;
     else if (waveHeight <= 1.8)
-        waveScore+=30;
+        waveHeightScore=waveHeight*25-45;
     else
-        waveScore+=40;
+        waveScore=100;
 
     //WavePeriod Score
-    if (wavePeriod >= 6)
-        waveScore+=5;
-    else if (wavePeriod >= 8 && wavePeriod <= 12)
-        waveScore+=10;
+    if (wavePeriod >= 8 && wavePeriod <= 12)
+        wavePeriodScore=100;
+    else if (wavePeriod >= 6)
+        wavePeriodScore=50;
 
     //WindSpeed Score
-    if (windSpeed <= 5)
-        waveScore+=30;
-    else if (windSpeed <= 10)
-        waveScore+=15;
-    else if (windSpeed <= 15)
-        waveScore+=5;
+    if (windSpeed <= 9.3)
+        windSpeedScore=100;
+    else if (windSpeed <= 16)
+        windSpeedScore=60;
+    else if (windSpeed <= 28)
+        windSpeedScore=30;
 
     //Onshore&Offshore Score
-    let ceta = Math.abs(waveDec - windDec)
-    if (ceta >= 60 )
-        waveScore+=5;
-    else if (ceta >= 90)
-        waveScore+=10;
-    else if (ceta >= 120)
-        waveScore+=15;
-    else if (ceta >= 160)
-        waveScore+=20;
+    let ceta = Math.abs(waveDec - windDec);
+    if (ceta>180)
+        ceta-=360;
+    if (ceta>80)
+        decScore = ceta;    
     
-    console.log(rawData);
-    console.log(waveScore);
-    console.log("=================");
+    console.log(waveHeightScore, wavePeriodScore, windSpeedScore, decScore);
+
+    waveScore = waveHeightScore*0.5 + wavePeriodScore*0.1 + windSpeedScore*0.3 + decScore*0.1;
 
     return waveScore;
 };
