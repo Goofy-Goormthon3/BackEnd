@@ -5,9 +5,6 @@ const moment = require("moment-timezone");
 import { rawDataLoader } from "./src/rawDataLoader";
 import { waveGrader } from "./src/waveGrader";
 import spotCodeData from "./data/spotCode";
-// const rawDataLoader = require("./src/rawDataLoader");
-// const waveGrader = require("./src/wave_grader");
-// const spotCodeData = require("./data/spotCode.json");
 
 exports.get_wave_info_total_data = async (req,res) => {
     try { 

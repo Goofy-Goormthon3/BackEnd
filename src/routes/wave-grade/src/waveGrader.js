@@ -1,10 +1,3 @@
-// const rawData = {
-//     "WaveHeight": 0.68,
-//     "WaveDec": 87,
-//     "WavePeriod": 4.05,
-//     "WindSpeed": 23.7,
-//     "WindDec": 46
-// };
 
 export async function waveGrader(rawData) {  
     let waveScore = 0;
