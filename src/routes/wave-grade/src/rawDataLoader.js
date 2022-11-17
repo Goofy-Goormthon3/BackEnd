@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const moment = require("moment-timezone");
 
 
-export async function rawDataLoader(lat, lng){
+export async function rawDataLoader(lat, lng, observationCode){
     let curTime = moment().tz("Asia/Seoul");
     let curHourNum = parseInt(curTime.format("HH"));
 
@@ -27,6 +27,14 @@ export async function rawDataLoader(lat, lng){
         resultData.WindDec = jsonData.hourly.winddirection_10m[curHourNum];  
         resultData.AirTemp = jsonData.hourly.apparent_temperature[curHourNum];      
         // console.log(resultData);
+    });    
+
+    //waterTempRawData
+    await fetch(`http://www.khoa.go.kr/api/oceangrid/beach/search.do?ServiceKey=yKsVFyE/Gea9zoJLOPMIdA==&BeachCode=${observationCode}&ResultType=json`, {
+    }).then((response) => response.json()).then((jsonData) => {
+        resultData.WaterTemp = jsonData.result.data[0].water_temp;
+        if (!resultData.WaterTemp)
+            resultData.WaterTemp = resultData.AirTemp;      
     });    
 
     return resultData;

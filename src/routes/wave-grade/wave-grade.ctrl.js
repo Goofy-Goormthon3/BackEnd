@@ -11,7 +11,7 @@ exports.get_wave_info_total_data = async (req,res) => {
         console.log("=================");
         let spotCodeNum = req.query.SpotCode;
         
-        const rawData = await rawDataLoader(spotCodeData.lat[spotCodeNum], spotCodeData.lat[spotCodeNum]);
+        const rawData = await rawDataLoader(spotCodeData.lat[spotCodeNum], spotCodeData.lat[spotCodeNum], spotCodeData.observationCode[spotCodeNum]);
         const waveGradeScore = await waveGrader(rawData);
         console.log(waveGradeScore);
         let waveGrade = 0;
@@ -28,13 +28,12 @@ exports.get_wave_info_total_data = async (req,res) => {
             waveGrade=5;
 
         //Need to be changed
-        let waterTemp = 20;
         let totalData = {
             WaveGrade: waveGrade.toString(),
             WaveHeight: rawData.WaveHeight.toString(),
             WindSpeed: rawData.WindSpeed.toString(),
             AirTemp: rawData.AirTemp.toString(),
-            WaterTemp: waterTemp.toString(), 
+            WaterTemp: rawData.WaterTemp.toString(), 
         }
         res.send(totalData);
     } catch (error) {
@@ -80,25 +79,17 @@ exports.get_raw_data = async (req, res) => {
 // get raw data from stormglass API
 exports.get_root = async (req,res) => {
     try {
-        
-        const lat = req.query.lat;
-        const lng = req.query.lng;
-
-        const params = 'waveHeight,wavePeriod,windSpeed,waveDirection,windDirection';
         let start= moment().utc().valueOf();
         let end = start;
-
-        fetch(`https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}&start=${start}&end=${end}`, {
-          headers: {
-            'Authorization': '8f0d79b4-65db-11ed-a654-0242ac130002-8f0d7a18-65db-11ed-a654-0242ac130002'
-          }
-        }).then((response) => response.json()).then((jsonData) => {
-            console.log("===============");
-            console.log(jsonData);
-            res.status(200).send(jsonData);
-        });        
         // res.status(200).send("Helloe World");
-    } catch (err) {
+
+        await fetch(`https://www.nifs.go.kr/OpenAPI_json?id=risaCode&key=qPwOeIrU-2211-hyhsumin01-0515`, {
+        }).then((response) => response.json()).then((jsonData) => {
+            console.log(jsonData);
+            res.send(jsonData);
+            // resultData.waterTemp = jsonData.hourly.apparent_temperature[];      
+        });        
+    } catch (err) {curHourNum
         console.log(err);
         res.send("error");
     }
