@@ -48,7 +48,8 @@ class App {
     }
 
     setCors() {
-        this.app.use(cors({orgin: 'http://13.125.249.90 :8080'}));
+        // this.app.use(cors({orgin: 'http://13.125.249.90:8080'}));
+        this.app.use(cors({orgin: 'http://localhost:3000'}));
     }
 
 }
