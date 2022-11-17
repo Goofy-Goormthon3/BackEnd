@@ -1,9 +1,41 @@
 const { Router } = require("express");
 const router = Router();
 const fetch = require("node-fetch");
-// const moment = require("moment");
 const moment = require("moment-timezone");
-const waveGrader = require("./src/waveGrader");
+import { rawDataLoader } from "./src/rawDataLoader";
+import { waveGrader } from "./src/waveGrader";
+import spotCodeData from "./data/spotCode";
+// const rawDataLoader = require("./src/rawDataLoader");
+// const waveGrader = require("./src/wave_grader");
+// const spotCodeData = require("./data/spotCode.json");
+
+exports.get_wave_info_total_data = async (req,res) => {
+    try { 
+        console.log("=================");
+        let spotCodeNum = req.query.SpotCode;
+        
+        const rawData = await rawDataLoader(spotCodeData.lat[spotCodeNum], spotCodeData.lat[spotCodeNum]);
+        const waveGradeScore = await waveGrader(rawData);
+        
+        //Need to be changed
+        let waterTemp = 20;
+        let totalData = {
+            WaveGrade: waveGradeScore,
+            WaveHieght: rawData.WaveHeight,
+            WindSpeed: rawData.WindSpeed,
+            AirTemp: rawData.AirTemp,
+            WaterTemp: waterTemp, 
+        }
+        // let totalData = {...rawData};
+        // totalData.WaveGrade=waveGradeScore;
+        // totalData.WaterTemp=waterTemp;
+
+        res.send(totalData);
+    } catch (error) {
+        console.log(error);
+        res.send("error");
+    }
+} 
 
 // get raw data from stormglass API
 exports.get_raw_data = async (req, res) => {
@@ -37,16 +69,6 @@ exports.get_raw_data = async (req, res) => {
         res.send("error");
     }
 }
-
-
-exports.get_wave_info_total_data = async (req,res) => {
-    try {
-
-    } catch (error) {
-        console.log(err);
-        res.send("error");
-    }
-} 
 
 
 // get raw data from stormglass API

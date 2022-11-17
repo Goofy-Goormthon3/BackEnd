@@ -6,12 +6,13 @@
 //     "WindDec": 46
 // };
 
-function waveGrader(rawData) {  
+export async function waveGrader(rawData) {  
     let waveScore = 0;
     let waveHeight = rawData.WaveHeight;
     let waveDec = rawData.WaveDec;
     let wavePeriod = rawData.WavePeriod;
     let windDec = rawData.WindDec;
+    let windSpeed = rawData.WindSpeed;
 
     //WaveHeight Score
     if (waveHeight <= 0.2) 
@@ -34,11 +35,11 @@ function waveGrader(rawData) {
         waveScore+=10;
 
     //WindSpeed Score
-    if (WindSpeed <= 5)
+    if (windSpeed <= 5)
         waveScore+=30;
-    else if (WindSpeed <= 10)
+    else if (windSpeed <= 10)
         waveScore+=15;
-    else if (WindSpeed <= 15)
+    else if (windSpeed <= 15)
         waveScore+=5;
 
     //Onshore&Offshore Score
@@ -51,8 +52,10 @@ function waveGrader(rawData) {
         waveScore+=15;
     else if (ceta >= 160)
         waveScore+=20;
+    
+    console.log(rawData);
+    console.log(waveScore);
+    console.log("=================");
 
     return waveScore;
 };
-
-module.exports = {waveGrader};
